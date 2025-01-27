@@ -1,11 +1,22 @@
 local afkZone = vector3(211.450562, -944.584595, 30.678345)
-local radius = 5.0
+local radius = 8.0
 
 local isInAfkZone = false
 
+-- Create a blip for the AFK zone
+local blip = AddBlipForCoord(afkZone.x, afkZone.y, afkZone.z)
+SetBlipSprite(blip, 76) -- Set the blip icon (1 is the default icon)
+SetBlipDisplay(blip, 4) -- Set the blip to appear on both the minimap and the main map
+SetBlipScale(blip, 0.5) -- Set the blip scale
+SetBlipColour(blip, 2) -- Set the blip color (2 is green)
+SetBlipAsShortRange(blip, true) -- Set the blip to only appear when nearby
+BeginTextCommandSetBlipName("STRING")
+AddTextComponentString("AFK Alue")
+EndTextCommandSetBlipName(blip)
+
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(1000)
+        Citizen.Wait(1000) -- Check every second
         local playerPed = PlayerPedId()
         local playerCoords = GetEntityCoords(playerPed)
         local distance = #(playerCoords - afkZone)
